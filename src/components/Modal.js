@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Modal(){
+function Modal(props){
 
         return (
               
@@ -15,12 +15,12 @@ function Modal(){
                               <div className="modal-body">
                                   <div className="form-group">
                                         <label>Name</label>
-                                      <input id="modal-nameField" type="text" className="form-control" />
+                                      <input onChange={props.onChangeModalText} value={props.modalText} id="modal-nameField" type="text" className="form-control" />
                                   </div>
                     
                               </div>
                               <div className="modal-footer">
-                                  <button type="button" id="modal-confirmButton" className="btn btn-primary" data-dismiss="modal">Confirm</button>
+                                  <button onClick={props.onUpdateEntry} type="button" id="modal-confirmButton" className="btn btn-primary" data-dismiss="modal">Confirm</button>
                                   <button type="button" className="btn btn-dark" data-dismiss="modal">Cancel</button>
                               </div>
                           </form>

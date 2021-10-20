@@ -6,9 +6,6 @@ import AddInput from './components/AddInput';
 import Modal from './components/Modal';
 import axios from "axios";
 import './App.css';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {faEdit} from '@fortawesome/free-solid-svg-icons';
-import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 function App() {
 
@@ -16,7 +13,11 @@ function App() {
 
   ]);
 
-  const[todoText, setTodoText] = useState("Example Text");
+  const[todoText, setTodoText] = useState("");
+  const[modalText, setModalText] = useState("");
+  const[currentId, setcurrentId] = useState();
+  const[currentRow,setCurrentRow] = useState();
+  
 
   useEffect(()=>{
     populateArray();
@@ -54,6 +55,12 @@ function App() {
     setTodoText(event.target.value);
   }
 
+  function changeModalText(event){
+    console.log(event.target.value);
+    setModalText(event.target.value);
+  }
+
+
   function deleteEntry(event){
     console.log(event.target.closest("tr").rowIndex);
     console.log(event.currentTarget.getAttribute("data-id"));
@@ -73,9 +80,32 @@ function App() {
     
   }
 
+  function editEntry(event){
+    let index = event.target.closest("tr").rowIndex;
+    setcurrentId(todos[index]._id);
+    setCurrentRow(index);
+    setModalText(todos[index].text);
+    showModal();
+  
+  }
+
+
+  function updateEntry(event){
+    event.preventDefault();
+    
+    axios.post('http://localhost:3000/update-item', { text: modalText, id: currentId }).then(function () {
+       const newArray = [...todos];
+       newArray[currentRow].text = modalText;
+       setTodos(newArray);
+    }).catch(function () {
+        console.log("Please try again later.");
+    })
+  }
+
 
   function showModal(){
     $('#myModal').modal('show');
+    
   }
 
   return (
@@ -84,8 +114,8 @@ function App() {
       <div className="main-container">
         
         <AddInput onChangeTodoText = {changeTodoText} onTodoText = {todoText} onAddItem = {addItem} />
-        <Table todoList = {todos} onDeleteEntry = {deleteEntry} />
-        <Modal />
+        <Table todoList = {todos} onDeleteEntry = {deleteEntry} onEditEntry = {editEntry} />
+        <Modal onChangeModalText = {changeModalText} modalText={modalText} onUpdateEntry={updateEntry}/>
       </div>
     </React.Fragment>
 
@@ -94,6 +124,3 @@ function App() {
 }
 
 export default App;
-
-
-
