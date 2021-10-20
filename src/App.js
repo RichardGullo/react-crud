@@ -1,25 +1,34 @@
-import logo from './logo.svg';
+import React, { Component, useState } from 'react';
+import $ from 'jquery';
+import Title from './components/Title';
+import Table from './components/Table';
+import AddInput from './components/AddInput';
+import Modal from './components/Modal';
 import './App.css';
 
 function App() {
+
+
+  function showModal(){
+    $('#myModal').modal('show');
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Title />
+      <div className="main-container">
+        
+        <AddInput />
+        <Table />
+        <Modal />
+      </div>
+    </React.Fragment>
+
   );
+  
 }
 
 export default App;
+
+
+
