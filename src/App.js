@@ -6,6 +6,9 @@ import AddInput from './components/AddInput';
 import Modal from './components/Modal';
 import axios from "axios";
 import './App.css';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faEdit} from '@fortawesome/free-solid-svg-icons';
+import {faTrash} from '@fortawesome/free-solid-svg-icons';
 
 function App() {
 
@@ -34,6 +37,7 @@ function App() {
 
   function addItem(event){
     event.preventDefault();
+    console.log(event.target);
 
     axios.post('http://localhost:3000/create-item', {text:todoText})
     .then(function(res){
@@ -50,6 +54,25 @@ function App() {
     setTodoText(event.target.value);
   }
 
+  function deleteEntry(event){
+    console.log(event.target.closest("tr").rowIndex);
+    console.log(event.currentTarget.getAttribute("data-id"));
+    console.log("hello");
+    let id = event.currentTarget.getAttribute("data-id");
+    
+    axios.post('http://localhost:3000/delete-item', {id: event.currentTarget.getAttribute("data-id") }).then(function () {
+     
+      const tempTodos = [...todos];
+      const filteredTodos = tempTodos.filter((tempTodo) => tempTodo._id != id);
+      setTodos(filteredTodos);
+
+
+  }).catch(function () {
+      console.log("Please try again later.");
+  })
+    
+  }
+
 
   function showModal(){
     $('#myModal').modal('show');
@@ -61,7 +84,7 @@ function App() {
       <div className="main-container">
         
         <AddInput onChangeTodoText = {changeTodoText} onTodoText = {todoText} onAddItem = {addItem} />
-        <Table todoList = {todos} />
+        <Table todoList = {todos} onDeleteEntry = {deleteEntry} />
         <Modal />
       </div>
     </React.Fragment>

@@ -7,6 +7,10 @@ html{
     height:100%;
 }
 
+button{
+    z-index: 40;
+}
+
 h1{
     text-align: center;
 }
