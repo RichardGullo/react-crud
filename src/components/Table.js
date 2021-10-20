@@ -9,7 +9,7 @@ function Table(props){
             <div className="table-scroll">
             <table id="main-table" className="table table-hover">
                 <tbody id="table-body">
-                    {props.todoList.map((todo) => <tr>
+                    {props.todoList.map((todo) => <tr key={todo._id}>
                                                         <td>{todo.text}</td>
                                                         <td className ="crud-buttons">
                                                             <FontAwesomeIcon icon={faEdit} data-id="0" data-action="edit" />

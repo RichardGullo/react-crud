@@ -4,14 +4,16 @@ import Title from './components/Title';
 import Table from './components/Table';
 import AddInput from './components/AddInput';
 import Modal from './components/Modal';
+import axios from "axios";
 import './App.css';
 
 function App() {
 
   const[todos, setTodos] = useState([
-    {id:1, todo:"Go to market"},
-    {id:2, todo:"Go play yugioh"}
+
   ]);
+
+  const[todoText, setTodoText] = useState("Example Text");
 
   useEffect(()=>{
     populateArray();
@@ -28,7 +30,25 @@ function App() {
         setTodos(data);
     
     })
-}
+  }
+
+  function addItem(event){
+    event.preventDefault();
+
+    axios.post('http://localhost:3000/create-item', {text:todoText})
+    .then(function(res){
+        console.log(res);
+        // todos.push({text:res.data.text, _id:res.data._id});
+        const tempTodos = [...todos];
+        tempTodos.push({text:res.data.text, _id:res.data._id});
+        setTodos(tempTodos);
+    });
+  }
+
+  function changeTodoText(event){
+    console.log(event.target.value);
+    setTodoText(event.target.value);
+  }
 
 
   function showModal(){
@@ -40,7 +60,7 @@ function App() {
       <Title />
       <div className="main-container">
         
-        <AddInput />
+        <AddInput onChangeTodoText = {changeTodoText} onTodoText = {todoText} onAddItem = {addItem} />
         <Table todoList = {todos} />
         <Modal />
       </div>
